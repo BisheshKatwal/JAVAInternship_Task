@@ -1,0 +1,94 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>User Form</title>
+        <style>
+            .error{color:red}
+            </style>
+    </h:head>
+    <h:body>
+        <h:form>
+                        
+            <h:panelGrid >
+                <!--firstname-->
+                <p:outputLabel for="fname" value="First Name" ></p:outputLabel>
+                <p:inputText required="true" id="fname" value="#{user.firstname}" requiredMessage="This field is mandatory"></p:inputText>
+                <h:message for="fname" styleClass="error"></h:message>
+            
+                <!--middlename-->
+                <p:outputLabel for="mname" value="Middle Name"></p:outputLabel>
+                <p:inputText id="mname" value="#{user.middlename}"></p:inputText>
+                
+          
+                <p:outputLabel for="lname" value="Last Name"></p:outputLabel>
+                <p:inputText required="true" id="lname" value="#{user.lastname}" requiredMessage="This field is mandatory" ></p:inputText>
+                <h:message for="lname" styleClass="error"></h:message>
+
+                
+                <p:outputLabel for="faculty" value="Faculty: " />  
+                <p:selectOneMenu id="faculty" value="#{user.faculty}" style="width:150px" required="true" requiredMessage="You must select one option.">  
+                    <p:ajax listener="#{user.onFacultyChange()}" update="program"></p:ajax>
+                    <f:selectItem itemLabel="Select Faculty" itemValue="" noSelectionOption="true"></f:selectItem>
+                    <f:selectItems value="#{user.facultyOptions}"></f:selectItems>
+                </p:selectOneMenu>
+                <h:message for="faculty" styleClass="error"></h:message>
+
+            
+                <p:outputLabel for="program" value="Program: "  />  
+                <p:selectOneMenu id="program" value="#{user.program}" style="width:150px" required="true" requiredMessage="You must select one option."> 
+                    <f:selectItem itemLabel="Select Program" itemValue="" noSelectionOption="true"></f:selectItem>
+                    <f:selectItems value="#{user.programOptions}"></f:selectItems>
+                </p:selectOneMenu>
+                <h:message for="program" styleClass="error"></h:message>
+
+            </h:panelGrid>
+            
+
+            <p:commandButton value = "Save" action="#{user.updateTable()}"   ajax="false"> 
+               
+            </p:commandButton> 
+            
+        </h:form>      
+        <p:separator></p:separator> 
+        <h:dataTable id="outputtable" value = "#{user.userList}" var = "val" border="3">
+   
+            <h:column>    				
+               <f:facet name = "header">First Name</f:facet>    				
+               #{val.firstname}
+            </h:column>
+
+            <h:column>
+               <f:facet name = "header">Middle Name</f:facet>
+               #{val.middlename}
+            </h:column>
+
+            <h:column>
+               <f:facet name = "header">Last Name</f:facet>
+               #{val.lastname}
+            </h:column>
+
+            <h:column>
+               <f:facet name = "header">Faculty</f:facet>
+               #{val.faculty}
+            </h:column>
+             <h:column>
+               <f:facet name = "header">Program</f:facet>
+               #{val.program}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <h:form>
+                    <h:commandLink value = "Delete" action="#{user.deleteRow(val)}"   ></h:commandLink> <h:outputText value="&#160;" />
+                    <h:commandLink value = "Edit" action="#{user.editRow(val)}"   ></h:commandLink> 
+
+                </h:form>
+            </h:column>
+        </h:dataTable>
+
+    </h:body>
+</html>
+
