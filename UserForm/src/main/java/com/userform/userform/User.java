@@ -155,6 +155,7 @@ public class User implements Serializable {
         this.middlename= null;
         this.lastname = null;
         this.faculty = null;
+        onFacultyChange();
         this.program = null;
                 
     }
@@ -166,11 +167,12 @@ public class User implements Serializable {
     }
     
     public void editRow(User u)
-    {
+    {     
         firstname = u.firstname;
         middlename= u.middlename;
         lastname= u.lastname;
         faculty = u.faculty;
+        onFacultyChange();
         program = u.program;
         deleteRow(u);        
         

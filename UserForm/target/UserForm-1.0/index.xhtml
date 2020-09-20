@@ -3,91 +3,119 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
     <h:head>
         <title>User Form</title>
         <style>
-            .error{color:red}
-            </style>
+            .error{color:red; border:none;}
+        </style>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
+
     </h:head>
-    <h:body>
-        <h:form>
+    <h:body class="container">
+        <h:outputStylesheet name="css/style.css" />
+        <div id="mainform" class="card">
+            
+            <h:form>
+                <div class="header">
+                    <h4 class="text-white text-center py-2">Registration Form</h4> 
+                </div> 
+                <div class="row">
+                    <div class="column">
+                        <div class="form-group">
+                                <!--firstname-->
+                            <!--<h:outputLabel for="fname" value="First Name" ></h:outputLabel><br/>-->
+                            <h:inputText a:placeholder="First Name" required="true" id="fname" class="inputtext form-control" value="#{user.firstname}"  requiredMessage="This field is mandatory"></h:inputText>
+                            <h:message for="fname" styleClass="error"></h:message>  
+                            <br/>
+
+                            <!--middlename-->
+                            <!--<p:outputLabel for="mname" value="Middle Name"></p:outputLabel><br/>-->
+                            <h:inputText  a:placeholder="Middle Name" id="mname"  class="inputtext form-control" value="#{user.middlename}"></h:inputText> 
+                            <br/>
+                            
+                            <!--<p:outputLabel for="lname" value="Last Name"></p:outputLabel><br/>-->
+                            <h:inputText a:placeholder="Last Name" required="true" id="lname" class="inputtext form-control"  value="#{user.lastname}" requiredMessage="This field is mandatory" ></h:inputText>
+                            <h:message for="lname" styleClass="error"></h:message>
+                            
+                        </div>
                         
-            <h:panelGrid >
-                <!--firstname-->
-                <p:outputLabel for="fname" value="First Name" ></p:outputLabel>
-                <p:inputText required="true" id="fname" value="#{user.firstname}" requiredMessage="This field is mandatory"></p:inputText>
-                <h:message for="fname" styleClass="error"></h:message>
-            
-                <!--middlename-->
-                <p:outputLabel for="mname" value="Middle Name"></p:outputLabel>
-                <p:inputText id="mname" value="#{user.middlename}"></p:inputText>
-                
-          
-                <p:outputLabel for="lname" value="Last Name"></p:outputLabel>
-                <p:inputText required="true" id="lname" value="#{user.lastname}" requiredMessage="This field is mandatory" ></p:inputText>
-                <h:message for="lname" styleClass="error"></h:message>
+                    </div>
+                    
+                    <div class="column">
+                        <!--<p:outputLabel for="faculty" value="Faculty: " />--> 
+                        <h:selectOneMenu id="faculty" class="dropdown form-control" value="#{user.faculty}"  required="true" requiredMessage="You must select one option.">  
+                            <p:ajax listener="#{user.onFacultyChange()}" update="program"></p:ajax>
+                            <f:selectItem itemLabel="Select Faculty" itemValue="" noSelectionOption="true"></f:selectItem>
+                            <f:selectItems value="#{user.facultyOptions}"></f:selectItems>
+                        </h:selectOneMenu>
+                        <h:message for="faculty" styleClass="error"></h:message><br/>
+                        
+                        <!--<p:outputLabel for="program" value="Program: "  />--> 
+                        <h:selectOneMenu id="program" class="dropdown form-control" value="#{user.program}"  required="true" requiredMessage="You must select one option."> 
+                            <f:selectItem itemLabel="Select Program" itemValue="" noSelectionOption="true"></f:selectItem>
+                            <f:selectItems value="#{user.programOptions}"></f:selectItems>
+                        </h:selectOneMenu>
+                        <h:message for="program" styleClass="error"></h:message>
+                        
+                         
+                    </div>
+                    
+                </div>
+                        
+                <div class="centeralign">
+                    <h:commandButton class="btn btn-info button" value = "Save" action="#{user.updateTable()}"  /> 
 
-                
-                <p:outputLabel for="faculty" value="Faculty: " />  
-                <p:selectOneMenu id="faculty" value="#{user.faculty}" style="width:150px" required="true" requiredMessage="You must select one option.">  
-                    <p:ajax listener="#{user.onFacultyChange()}" update="program"></p:ajax>
-                    <f:selectItem itemLabel="Select Faculty" itemValue="" noSelectionOption="true"></f:selectItem>
-                    <f:selectItems value="#{user.facultyOptions}"></f:selectItems>
-                </p:selectOneMenu>
-                <h:message for="faculty" styleClass="error"></h:message>
+                </div>
+                <br/>
 
             
-                <p:outputLabel for="program" value="Program: "  />  
-                <p:selectOneMenu id="program" value="#{user.program}" style="width:150px" required="true" requiredMessage="You must select one option."> 
-                    <f:selectItem itemLabel="Select Program" itemValue="" noSelectionOption="true"></f:selectItem>
-                    <f:selectItems value="#{user.programOptions}"></f:selectItems>
-                </p:selectOneMenu>
-                <h:message for="program" styleClass="error"></h:message>
-
-            </h:panelGrid>
+        </h:form>  
             
-
-            <p:commandButton value = "Save" action="#{user.updateTable()}"   ajax="false"> 
-               
-            </p:commandButton> 
+        </div>
             
-        </h:form>      
-        <p:separator></p:separator> 
-        <h:dataTable id="outputtable" value = "#{user.userList}" var = "val" border="3">
+        <div id ="output" class="card">
+            <div class="header">
+                    <h4 class="text-white text-center py-2">Student List</h4> 
+            </div> 
+            <h:dataTable id="outputtable" class="table" value = "#{user.userList}" var = "val" >
    
-            <h:column>    				
-               <f:facet name = "header">First Name</f:facet>    				
-               #{val.firstname}
-            </h:column>
+                <h:column>    				
+                   <f:facet name = "header">First Name</f:facet>    				
+                   <h:outputText value="#{val.firstname}"/>
+                </h:column>
 
-            <h:column>
-               <f:facet name = "header">Middle Name</f:facet>
-               #{val.middlename}
-            </h:column>
+                <h:column>
+                   <f:facet name = "header">Middle Name</f:facet>
+                   <h:outputText value="#{val.middlename}" />
+                </h:column>
 
-            <h:column>
-               <f:facet name = "header">Last Name</f:facet>
-               #{val.lastname}
-            </h:column>
+                <h:column>
+                   <f:facet name = "header">Last Name</f:facet>
+                   <h:outputText value="#{val.lastname}"/>
+                </h:column>
 
-            <h:column>
-               <f:facet name = "header">Faculty</f:facet>
-               #{val.faculty}
-            </h:column>
-             <h:column>
-               <f:facet name = "header">Program</f:facet>
-               #{val.program}
-            </h:column>
-            <h:column>
-                <f:facet name="header">Action</f:facet>
-                <h:form>
-                    <h:commandLink value = "Delete" action="#{user.deleteRow(val)}"   ></h:commandLink> <h:outputText value="&#160;" />
-                    <h:commandLink value = "Edit" action="#{user.editRow(val)}"   ></h:commandLink> 
+                <h:column>
+                   <f:facet name = "header">Faculty</f:facet>
+                   <h:outputText value="#{val.faculty}"/>
+                </h:column>
+                 <h:column>
+                   <f:facet name = "header">Program</f:facet>
+                   <h:outputText value="#{val.program}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Action</f:facet>
+                    <h:form>
+                        <h:commandLink value = "Delete" action="#{user.deleteRow(val)}"   ></h:commandLink> <h:outputText value="&#160;" />
+                        <h:commandLink value = "Edit" action="#{user.editRow(val)}"   >
+                            <!--<p:ajax update="mainform"/>-->
+                        </h:commandLink> 
 
-                </h:form>
-            </h:column>
-        </h:dataTable>
+                    </h:form>
+                </h:column>
+            </h:dataTable>
+        </div>
 
     </h:body>
 </html>

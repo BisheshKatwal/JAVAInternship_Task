@@ -7,6 +7,46 @@ and open the template in the editor.
     Created on : Sep 16, 2020, 11:26:36 AM
     Author     : Bishesh Katwal
 */
-#outputtable{
-    border: solid 2px;
+
+/*#mainform{
+    width: 80%;
+    
+}*/
+.ui-inputfield{
+    width:90%;
+}
+
+.header{
+    background-color: #17a2b8;
+}
+
+#output{
+    
+   margin-top: 20px;
+}
+
+.column{
+    width:45%;
+    margin-left: 20px;
+}
+.row{
+    width: 100%;
+}
+
+.inputtext{
+    width:100%;
+}
+
+.dropdown{
+    width:50%;
+}
+.button{
+    width:150px;
+    margin:0 auto;
+    /*display:block;*/
+    
+}
+.centeralign{
+     display: flex;
+  justify-content: center;
 }

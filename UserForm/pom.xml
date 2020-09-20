@@ -133,7 +133,7 @@
                   </goals>
                   
                   <configuration>
-                     <outputDirectory>${basedir}/resources
+                     <outputDirectory>${basedir}/target/UserForm-1.0/resources
                         </outputDirectory>
                      <resources>          
                         <resource>
